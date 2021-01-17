@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: like-depl
+# how does the deployment should behave
+spec:
+  #how many pods you want to create running some perticular container
+  replicas: 1
+  selector:
+    matchLabels:
+      app: like
+  template:
+    metadata:
+      labels:
+        app: like
+    spec:
+      containers:
+        - name: like
+          image: aritra/like:0.0.1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: like-srv
+spec:
+  type: ClusterIP # default is cluster ip
+  selector:
+    app: like
+  ports:
+    - name: like-srv
+      protocol: TCP
+      port: 4001
+      targetPort: 4001

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-depl
+# how does the deployment should behave
+spec:
+  #how many pods you want to create running some perticular container
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post
+  template:
+    metadata:
+      labels:
+        app: post
+    spec:
+      containers:
+        - name: post
+          image: aritra/post:0.0.1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-srv-cluster
+spec:
+  type: ClusterIP # default is cluster ip
+  selector:
+    app: post
+  ports:
+    - name: post-srv-cluster
+      protocol: TCP
+      port: 4002
+      targetPort: 4002

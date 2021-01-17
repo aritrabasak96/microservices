@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-depl
+#how our deployment should behave
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event
+
+  # specify the configuration of that pod, that we want our deployment to create
+  template:
+    metadata:
+      labels:
+        app: event
+    spec:
+      containers:
+        - name: event
+          image: aritra/event:0.0.1
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-srv
+spec:
+  type: ClusterIP # default is cluster ip
+  selector:
+    app: event
+  ports:
+    - name: event-srv
+      protocol: TCP
+      port: 4004
+      targetPort: 4004

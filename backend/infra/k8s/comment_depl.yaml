@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-depl
+#how our deployment should behave
+##
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment
+
+  # specify the configuration of that pod, that we want our deployment to create
+  template:
+    metadata:
+      labels:
+        app: comment
+    spec:
+      containers:
+        - name: comment
+          image: aritra/comment:0.0.1
+
+---
+# crete the cluster ip
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-srv
+spec:
+  selector:
+    app: comment
+  ports:
+    - name: comment-srv
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
